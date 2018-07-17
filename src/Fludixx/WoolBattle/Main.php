@@ -69,13 +69,13 @@ class Main extends PluginBase implements Listener{
         $this->getServer()->getNetwork()->setName(f::WHITE . "Wool" . f::GREEN . "Battle");
         $this->getLogger()->info(getcwd());
         // Clearing Arenas
-	    if(!is_dir("/home")) {@mkdir("/home");}
-	    if(!is_dir("/home/cfg")) {@mkdir("/home/cfg");}
-	    if(!is_dir("/home/maps")) {@mkdir("/home/maps");}
-	    if(!is_dir("/home/elo")) {@mkdir("/home/elo");}
+	    if(!is_dir("/Home")) {@mkdir("/Home");}
+	    if(!is_dir("/Home/cfg")) {@mkdir("/Home/cfg");}
+	    if(!is_dir("/Home/maps")) {@mkdir("/Home/maps");}
+	    if(!is_dir("/Home/elo")) {@mkdir("/Home/elo");}
 
 	    // language
-	    $lang = new Config("/home/cfg/lang.yml", Config::YAML);
+	    $lang = new Config("/Home/cfg/lang.yml", Config::YAML);
 	    $this->lang = (string)$lang->get("lang");
 	    if(!$this->lang) {
 	    	$lang->set("lang", "eng");
@@ -83,7 +83,7 @@ class Main extends PluginBase implements Listener{
 	    if($this->lang == "deu") {$this->getLogger()->info($this->prefix . "Die Sprache wurde zu Deutsch gesetzt!");}
 	    else {$this->getLogger()->info($this->prefix."The Language has been set to English!");}
 
-        $arena = new Config("/home/maps/woolconfig.yml", Config::YAML);
+        $arena = new Config("/Home/maps/woolconfig.yml", Config::YAML);
         foreach($this->arenaids as $id) {
         	$arena->set("usew$id", false);
         }
@@ -101,10 +101,10 @@ class Main extends PluginBase implements Listener{
         }
         $this->arenaids = $arena->get("arenas");
 
-        $perks = new Config("/home/cfg/perks.yml", Config::YAML);
+        $perks = new Config("/Home/cfg/perks.yml", Config::YAML);
         if(!$perks || !$perks->get("kapsel_y")) {
-        	@mkdir("/home/cfg/");
-	        $perks = new Config("/home/cfg/perks.yml", Config::YAML);
+        	@mkdir("/Home/cfg/");
+	        $perks = new Config("/Home/cfg/perks.yml", Config::YAML);
 	        $perks->set("kapsel_y", 3);
 	        $perks->save();
         }
@@ -125,21 +125,21 @@ class Main extends PluginBase implements Listener{
         $this->getWoolLobby($player);
 	    $task = new Asker($this, $player);
 	    $this->getScheduler()->scheduleRepeatingTask($task, 5);
-     $kconfig = new Config("/home/users/".$name.".yml", Config::YAML);
+     $kconfig = new Config("/Home/users/".$name.".yml", Config::YAML);
      if(!$kconfig->get("woolkills") && !$kconfig->get("wooltode")){
         $kconfig->set("woolkills", 1);
         $kconfig->set("wooltode", 1);
         $kconfig->save();
      }
 	    $welt = $this->getServer()->getLevelByName("lobby");
-	    $cfg = new Config("/home/maps/woolconfig.yml", Config::YAML);
+	    $cfg = new Config("/Home/maps/woolconfig.yml", Config::YAML);
 	    $x = $cfg->get("spawnx");
 	    $y = $cfg->get("spawny");
 	    $z = $cfg->get("spawnz");
 	    $pos = new Position($x, $y, $z, $welt);
 	    $player->teleport($pos);
 	    // Unbenuzte Config laden um bugs zu verhindern!
-	    $c = new Config("/home/users/$name.yml", Config::YAML);
+	    $c = new Config("/Home/users/$name.yml", Config::YAML);
 	    $c->set("ingame", false);
 	    $c->set("woolcolor", false);
 	    $c->set("ms", false);
@@ -155,7 +155,7 @@ class Main extends PluginBase implements Listener{
         $player = $event->getPlayer();
         $playername = $player->getName();
         $name = $player->getName();
-	    $c = new Config("/home/users/$name.yml", Config::YAML);
+	    $c = new Config("/Home/users/$name.yml", Config::YAML);
 	    //$c->set("ingame", false);
 	    $c->set("woolcolor", false);
 	    $c->set("ms", false);
@@ -202,7 +202,7 @@ class Main extends PluginBase implements Listener{
         $visible = false;
         $instance = new EffectInstance($effect, $duration, $amplification, $visible);
         $spieler->addEffect($instance);
-        $wool = new Config("/home/users/".$spielername.".yml", Config::YAML);
+        $wool = new Config("/Home/users/".$spielername.".yml", Config::YAML);
         $perk = $wool->get("woolperk");
         $perk2 = $wool->get("woolperk2");
         if($perk2 == "ekytra") {
@@ -438,7 +438,7 @@ class Main extends PluginBase implements Listener{
             $event->setCancelled();
         }
         if($block->getId() === 35) {
-            $wool = new Config("/home/users/".$name.".yml", Config::YAML);
+            $wool = new Config("/Home/users/".$name.".yml", Config::YAML);
             $wcolor = $wool->get("woolcolor");
             $event->setCancelled();
             if($wcolor == "red") {
@@ -451,7 +451,7 @@ class Main extends PluginBase implements Listener{
     public function onPlace(BlockPlaceEvent $event) {
     	$player = $event->getPlayer();
         $name = $event->getPlayer()->getName();
-        $wool = new Config("/home/users/".$name.".yml", Config::YAML);
+        $wool = new Config("/Home/users/".$name.".yml", Config::YAML);
         $ingame = $wool->get("ingame");
         $block = $event->getBlock();
         if($ingame == true && !($block->getId() === 165) && $player->getLevel()->getName() != "lobby") {
@@ -488,7 +488,7 @@ class Main extends PluginBase implements Listener{
         }
         if ($command->getName() == "spectate") {
 	        $name = $sender->getName();
-	        $cp = new Config("/home/users/$name.yml", Config::YAML);
+	        $cp = new Config("/Home/users/$name.yml", Config::YAML);
 	        $inGame = $cp->get("ingame");
 	        if($inGame) {
 	        	if($this->lang == "deu") {
@@ -536,7 +536,7 @@ class Main extends PluginBase implements Listener{
         }
         if($command->getName() == "lobby") {
         	$name = $sender->getName();
-        	$cp = new Config("/home/users/$name.yml", Config::YAML);
+        	$cp = new Config("/Home/users/$name.yml", Config::YAML);
         	$inGame = $cp->get("ingame");
         	if($inGame) {
 		        if($this->lang == "deu") {
@@ -548,7 +548,7 @@ class Main extends PluginBase implements Listener{
 	        } else {
 		        $sender = $this->getServer()->getPlayer($name);
 		        $level = $this->getServer()->getLevelByName("lobby");
-		        $c = new Config("/home/maps/woolconfig.yml", Config::YAML);
+		        $c = new Config("/Home/maps/woolconfig.yml", Config::YAML);
 		        $x = $c->get("spawnx");
 		        $y = $c->get("spawny");
 		        $z = $c->get("spawnz");
@@ -567,7 +567,7 @@ class Main extends PluginBase implements Listener{
 						$this->throwNoPlayer($sender);
 					} else {
 						$name = $sender->getName();
-						$c = new Config("/home/users/$name.yml", Config::YAML);
+						$c = new Config("/Home/users/$name.yml", Config::YAML);
 						$op = $this->getServer()->getPlayer($args['1']);
 						$oname = $op->getName();
 						if($this->lang == "deu") {
@@ -579,7 +579,7 @@ class Main extends PluginBase implements Listener{
 							$op->sendMessage($this->prefix . "$name wants you tp be in his Group!");
 							$op->sendMessage($this->prefix . "Use /g accept to accept the Invite!");
 						}
-						$oc = new Config("/home/users/$oname.yml", Config::YAML);
+						$oc = new Config("/Home/users/$oname.yml", Config::YAML);
 						$oc->set("invited", "$name");
 						$oc->save();
 						return true;
@@ -587,7 +587,7 @@ class Main extends PluginBase implements Listener{
 		        }
 		        if($args['0'] == "accept" || $args['0'] == "ok" || $args['0'] == "apt") {
 				        $name = $sender->getName();
-				        $c = new Config("/home/users/$name.yml", Config::YAML);
+				        $c = new Config("/Home/users/$name.yml", Config::YAML);
 				        $op = $this->getServer()->getPlayer((string)$c->get("invited"));
 				        if(!$op) {
 					        if($this->lang == "deu") {
@@ -598,7 +598,7 @@ class Main extends PluginBase implements Listener{
 				        	return false;
 				        } else {
 				        	$oname = $op->getName();
-				        	$oc = new Config("/home/users/$oname.yml", Config::YAML);
+				        	$oc = new Config("/Home/users/$oname.yml", Config::YAML);
 				        	$grouparray = (array)$c->get("grouparray");
 				        	$grouparray[0] = $name;
 				        	$lastindex = key( array_slice( $grouparray, -1, 1, TRUE ) );
@@ -607,7 +607,7 @@ class Main extends PluginBase implements Listener{
 				        	$oc->set("grouparray", $grouparray);
 				        	$c->set("leader", "$oname");
 				        	$oc->set("leader", "$oname");
-				        	$c->set("lastaction", "Added $name to grouparray in /home/users/$oname.yml");
+				        	$c->set("lastaction", "Added $name to grouparray in /Home/users/$oname.yml");
 				        	$oc->save();
 				        	$c->save();
 					        if($this->lang == "deu") {
@@ -622,7 +622,7 @@ class Main extends PluginBase implements Listener{
 		        }
 		        if($args['0'] == "lst" || $args['0'] == "list" || $args['0'] == "show") {
         			$name = $sender->getName();
-			        $c = new Config("/home/users/$name.yml", Config::YAML);
+			        $c = new Config("/Home/users/$name.yml", Config::YAML);
 			        $leader = $this->getServer()->getPlayer((string)$c->get("leader"));
 			        if(!$leader) {
 				        if($this->lang == "deu") {
@@ -633,7 +633,7 @@ class Main extends PluginBase implements Listener{
 			        	return false;
 			        } else {
 			        	$lname = $leader->getName();
-			        	$lc = new Config("/home/users/$lname.yml", Config::YAML);
+			        	$lc = new Config("/Home/users/$lname.yml", Config::YAML);
 			        	$grouparray = (array)$lc->get("grouparray");
 				        if($this->lang == "deu") {
 							$sender->sendMessage($this->prefix."Hier ist eine Liste deiner Gruppe:");
@@ -657,7 +657,7 @@ class Main extends PluginBase implements Listener{
 				        $this->throwNoPlayer($sender);
 			        } else {
 						$name = $sender->getName();
-			        	$c = new Config("/home/users/$name.yml");
+			        	$c = new Config("/Home/users/$name.yml");
 			        	$leadername = $c->get("leader");
 			        	if($leadername == $name) {
 			        		$kick = $this->getServer()->getPlayer((string)$args['1']);
@@ -678,7 +678,7 @@ class Main extends PluginBase implements Listener{
 		        }
 		        if($args['0'] == "del" || $args['0'] == "dl" || $args['0'] == "delete" || $args['0'] == "leave" || $args['0'] == "l") {
 				        $name = $sender->getName();
-				        $c = new Config("/home/users/$name.yml");
+				        $c = new Config("/Home/users/$name.yml");
 				        $leadername = $c->get("leader");
 				        if($leadername == $name) {
 				        	$grouparray = $c->get("grouparray");
@@ -690,7 +690,7 @@ class Main extends PluginBase implements Listener{
 							        $player->sendMessage($this->prefix . "The Group got Deleted!");
 						        }
 				        		$name = $player->getName();
-				        		$c = new Config("/home/users/$name.yml", Config::YAML);
+				        		$c = new Config("/Home/users/$name.yml", Config::YAML);
 				        		$c->set("leader", false);
 				        		$c->set("grouparray", array());
 				        		$c->save();
@@ -705,7 +705,7 @@ class Main extends PluginBase implements Listener{
 				        } else {
 				        	$c->set("leader", false);
 				        	$leader = $this->getServer()->getPlayer($leadername);
-				        	$cl = new Config("/home/users/$leadername.yml", Config::YAML);
+				        	$cl = new Config("/Home/users/$leadername.yml", Config::YAML);
 				        	$grouparray =  (array)$cl->get("grouparray");
 					        $playerindex = array_search($name, $grouparray);
 					        unset($grouparray[$playerindex]);
@@ -735,7 +735,7 @@ class Main extends PluginBase implements Listener{
 	        }
 	        if($command->getName() == "lastaction") {
         		$name = $sender->getName();
-        		$c = new Config("/home/users/$name.yml", Config::YAML);
+        		$c = new Config("/Home/users/$name.yml", Config::YAML);
         		$sender->sendMessage($c->get("lastaction"));
         		return true;
 	        }
@@ -759,7 +759,7 @@ class Main extends PluginBase implements Listener{
         if ($item->getCustomName() == f::GREEN . "Elytra" . f::WHITE . "Perk" . f::AQUA . "  [FREE]") {
             $click = new ClickSound($player);
             $player->getLevel()->addSound($click);
-            $wool = new Config("/home/users/".$playername.".yml", Config::YAML);
+            $wool = new Config("/Home/users/".$playername.".yml", Config::YAML);
             $ifalready = $wool->get("woolperk");
             if($ifalready == "elytra") {
 	            if($this->lang == "deu") {
@@ -776,7 +776,7 @@ class Main extends PluginBase implements Listener{
         if ($item->getCustomName() == f::GREEN . "Elytra" . f::WHITE . "Perk" . f::AQUA . "2  [FREE]") {
             $click = new ClickSound($player);
             $player->getLevel()->addSound($click);
-            $wool = new Config("/home/users/".$playername.".yml", Config::YAML);
+            $wool = new Config("/Home/users/".$playername.".yml", Config::YAML);
             $ifalready = $wool->get("woolperk2");
             if($ifalready == "elytra") {
 	            if($this->lang == "deu") {
@@ -793,7 +793,7 @@ class Main extends PluginBase implements Listener{
         if ($item->getCustomName() == f::GREEN . "Slime" . f::WHITE . "Perk" . f::GOLD . "  [600 ELO]") {
             $click = new ClickSound($player);
             $player->getLevel()->addSound($click);
-            $wool = new Config("/home/users/".$playername.".yml", Config::YAML);
+            $wool = new Config("/Home/users/".$playername.".yml", Config::YAML);
             $ifalready = $wool->get("woolperk");
             if($ifalready == "slime") {
 	            if($this->lang == "deu") {
@@ -803,7 +803,7 @@ class Main extends PluginBase implements Listener{
 	            }
                 return 1;
             }
-            $elo = new Config("/home/elo/".$playername.".yml", Config::YAML);
+            $elo = new Config("/Home/elo/".$playername.".yml", Config::YAML);
             $celo = $elo->get("elo");
             if($celo < 600) {
                 $player->sendMessage($this->prefix . f::RED . "Not enough elo!");
@@ -816,7 +816,7 @@ class Main extends PluginBase implements Listener{
         if ($item->getCustomName() == f::GREEN . "Slime" . f::WHITE . "Perk" . f::GOLD . "2  [600 ELO]") {
             $click = new ClickSound($player);
             $player->getLevel()->addSound($click);
-            $wool = new Config("/home/users/".$playername.".yml", Config::YAML);
+            $wool = new Config("/Home/users/".$playername.".yml", Config::YAML);
             $ifalready = $wool->get("woolperk2");
             if($ifalready == "slime") {
 	            if($this->lang == "deu") {
@@ -826,7 +826,7 @@ class Main extends PluginBase implements Listener{
 	            }
                 return 1;
             }
-            $elo = new Config("/home/elo/".$playername.".yml", Config::YAML);
+            $elo = new Config("/Home/elo/".$playername.".yml", Config::YAML);
             $celo = $elo->get("elo");
             if($celo < 600) {
                 $player->sendMessage($this->prefix . f::RED . "Not enough elo!");
@@ -839,7 +839,7 @@ class Main extends PluginBase implements Listener{
 	    if($item->getCustomName() == f::GREEN . "Switcher" . f::WHITE . "Perk" . f::GOLD . "  [1000 ELO]") {
 		    $click = new ClickSound($player);
 		    $player->getLevel()->addSound($click);
-		    $wool = new Config("/home/users/".$playername.".yml", Config::YAML);
+		    $wool = new Config("/Home/users/".$playername.".yml", Config::YAML);
 		    $ifalready = $wool->get("woolperk");
 		    if($ifalready == "switch") {
 			    if($this->lang == "deu") {
@@ -849,7 +849,7 @@ class Main extends PluginBase implements Listener{
 			    }
 			    return 1;
 		    }
-		    $elo = new Config("/home/elo/".$playername.".yml", Config::YAML);
+		    $elo = new Config("/Home/elo/".$playername.".yml", Config::YAML);
 		    $celo = $elo->get("elo");
 		    if($celo <= 1000) {
 			    $player->sendMessage($this->prefix . f::RED . "Not enough elo!");
@@ -862,7 +862,7 @@ class Main extends PluginBase implements Listener{
 	    if($item->getCustomName() == f::GREEN . "Switcher" . f::WHITE . "Perk" . f::GOLD . "2  [1000 ELO]") {
 		    $click = new ClickSound($player);
 		    $player->getLevel()->addSound($click);
-		    $wool = new Config("/home/users/".$playername.".yml", Config::YAML);
+		    $wool = new Config("/Home/users/".$playername.".yml", Config::YAML);
 		    $ifalready = $wool->get("woolperk2");
 		    if($ifalready == "switch") {
 			    if($this->lang == "deu") {
@@ -872,7 +872,7 @@ class Main extends PluginBase implements Listener{
 			    }
 			    return 1;
 		    }
-		    $elo = new Config("/home/elo/".$playername.".yml", Config::YAML);
+		    $elo = new Config("/Home/elo/".$playername.".yml", Config::YAML);
 		    $celo = $elo->get("elo");
 		    if($celo <= 1000) {
 			    $player->sendMessage($this->prefix . f::RED . "Not enough elo!");
@@ -884,7 +884,7 @@ class Main extends PluginBase implements Listener{
 	    }
         if ($item->getCustomName() == f::GREEN . "Slime" . f::WHITE . "Perk") {
 	        $name = $player->getName();
-	        $c = new Config("/home/users/$name.yml", Config::YAML);
+	        $c = new Config("/Home/users/$name.yml", Config::YAML);
 	        if ($c->get("cooldown") == true) {
 		        if($this->lang == "deu") {
 			        $player->sendMessage($this->prefix.f::RED."5 Sekunden Cooldown!");
@@ -916,7 +916,7 @@ class Main extends PluginBase implements Listener{
         }
         if ($item->getCustomName() == f::GREEN . "Platform" . f::WHITE . "Perk") {
 	        $name = $player->getName();
-	        $c = new Config("/home/users/$name.yml", Config::YAML);
+	        $c = new Config("/Home/users/$name.yml", Config::YAML);
 	        if ($c->get("cooldown") == true) {
 		        if($this->lang == "deu") {
 			        $player->sendMessage($this->prefix.f::RED."10 Sekunden Cooldown!");
@@ -936,7 +936,7 @@ class Main extends PluginBase implements Listener{
 		        }
 		        $block = Block::get(165, 0);
 		        $name = $player->getName();
-		        $wool = new Config("/home/users/" . $name . ".yml", Config::YAML);
+		        $wool = new Config("/Home/users/" . $name . ".yml", Config::YAML);
 		        $wcolor = $wool->get("woolcolor");
 		        if ($wcolor == "red") {
 			        $rand = Block::get(35, 14);
@@ -1007,7 +1007,7 @@ class Main extends PluginBase implements Listener{
 		    $click = new ClickSound($player);
 		    $player->getLevel()->addSound($click);
 		    $name = $player->getName();
-		    $c = new Config("/home/users/$name.yml", Config::YAML);
+		    $c = new Config("/Home/users/$name.yml", Config::YAML);
 		    $kills = $c->get("woolkills");
 		    $tode = $c->get("wooltode");
 		    $kd = $kills / $tode;
@@ -1018,7 +1018,7 @@ class Main extends PluginBase implements Listener{
         if ($item->getCustomName() == f::GREEN . "Platform" . f::WHITE . "Perk" . f::GOLD . "  [800 ELO]") {
             $click = new ClickSound($player);
             $player->getLevel()->addSound($click);
-            $wool = new Config("/home/users/".$playername.".yml", Config::YAML);
+            $wool = new Config("/Home/users/".$playername.".yml", Config::YAML);
             $ifalready = $wool->get("woolperk");
             if($ifalready == "kapsel") {
 	            if($this->lang == "deu") {
@@ -1028,7 +1028,7 @@ class Main extends PluginBase implements Listener{
 	            }
                 return 1;
             }
-            $elo = new Config("/home/elo/".$playername.".yml", Config::YAML);
+            $elo = new Config("/Home/elo/".$playername.".yml", Config::YAML);
             $celo = $elo->get("elo");
             if($celo < 800) {
                 $player->sendMessage($this->prefix . f::RED . "Zu wenig Elo!");
@@ -1041,7 +1041,7 @@ class Main extends PluginBase implements Listener{
         if ($item->getCustomName() == f::GREEN . "Platform" . f::WHITE . "Perk" . f::GOLD . "2  [800 ELO]") {
             $click = new ClickSound($player);
             $player->getLevel()->addSound($click);
-            $wool = new Config("/home/users/".$playername.".yml", Config::YAML);
+            $wool = new Config("/Home/users/".$playername.".yml", Config::YAML);
             $ifalready = $wool->get("woolperk2");
             if($ifalready == "kapsel") {
 	            if($this->lang == "deu") {
@@ -1051,7 +1051,7 @@ class Main extends PluginBase implements Listener{
 	            }
                 return 1;
             }
-            $elo = new Config("/home/elo/".$playername.".yml", Config::YAML);
+            $elo = new Config("/Home/elo/".$playername.".yml", Config::YAML);
             $celo = $elo->get("elo");
             if($celo < 800) {
                 $player->sendMessage($this->prefix . f::RED . "Zu wenig Elo!");
@@ -1062,7 +1062,7 @@ class Main extends PluginBase implements Listener{
             $wool->save();
         }
         if($item->getCustomName() == f::GOLD . "2nd " . f::GREEN . "Perk" . f::WHITE . "Shop") {
-            $config = new Config("/home/elo/".$playername.".yml");
+            $config = new Config("/Home/elo/".$playername.".yml");
             $elo = $config->get("elo");
             if($elo > 1000) {
             $click = new ClickSound($player);
@@ -1111,7 +1111,7 @@ public function onHunger(PlayerExhaustEvent $event) {
 
     public function rmWool(Player $player){
         $name = $player->getName();
-        $wool = new Config("/home/users/".$name.".yml", Config::YAML);
+        $wool = new Config("/Home/users/".$name.".yml", Config::YAML);
         $wcolor = $wool->get("woolcolor");
         if($wcolor == "red") {
         $player->getInventory()->remove(Item::get(35, 14, 1));
@@ -1122,7 +1122,7 @@ public function onHunger(PlayerExhaustEvent $event) {
 
     public function addWool(Player $player, int $i){
         $name = $player->getName();
-        $wool = new Config("/home/users/".$name.".yml", Config::YAML);
+        $wool = new Config("/Home/users/".$name.".yml", Config::YAML);
         $wcolor = $wool->get("woolcolor");
         $inv = $player->getInventory();
         $c = 0;
@@ -1139,7 +1139,7 @@ public function onHunger(PlayerExhaustEvent $event) {
     public function setPrice($player, int $price) {
             $woola = $this->countWool($player);
 	        $name = $player->getName();
-	        $wool = new Config("/home/users/".$name.".yml", Config::YAML);
+	        $wool = new Config("/Home/users/".$name.".yml", Config::YAML);
 	        $wcolor = $wool->get("woolcolor");
             if($woola < $price) {
             	$need = (int)$price-(int)$woola;
@@ -1179,7 +1179,7 @@ public function onHunger(PlayerExhaustEvent $event) {
     public function onDamage(EntityDamageEvent $event) {
         if ($event instanceof EntityDamageByEntityEvent) {
             $playername = $event->getEntity()->getName();
-            $cplayer = new Config("/home/users/".$playername.".yml", Config::YAML);
+            $cplayer = new Config("/Home/users/".$playername.".yml", Config::YAML);
             $spawnprtotection = $cplayer->get("spawnprotect");
 	        $damager = $event->getDamager();
             if($cplayer->get("ingame") == true) {
@@ -1196,8 +1196,8 @@ public function onHunger(PlayerExhaustEvent $event) {
             if ($player instanceof Player && $damager instanceof Player) {
                 $playername = $player->getName();
                 $damagername = $damager->getName();
-                $cplayer = new Config("/home/users/".$playername.".yml", Config::YAML);
-                $cdamager = new Config("/home/users/".$damagername.".yml", Config::YAML);
+                $cplayer = new Config("/Home/users/".$playername.".yml", Config::YAML);
+                $cdamager = new Config("/Home/users/".$damagername.".yml", Config::YAML);
                 if($cdamager->get("leader") != false) {
 	                if ($cdamager->get("leader") == $damagername) {
 						if($cplayer->get("leader") == false) {
@@ -1236,7 +1236,7 @@ public function onHunger(PlayerExhaustEvent $event) {
 	            	$damager->sendMessage($this->prefix."Request send to ".f::GREEN."$playername");
 	            }
                 if($cdamager->get("ms") == $playername) {
-	                $arena = new Config("/home/maps/woolconfig.yml", Config::YAML);
+	                $arena = new Config("/Home/maps/woolconfig.yml", Config::YAML);
 	                foreach($this->arenaids as $id) {
 	                	$arenaid = "w$id";
 		                $$arenaid = $arena->get("usew$id");
@@ -1264,7 +1264,7 @@ public function onHunger(PlayerExhaustEvent $event) {
     {
 	    $player->sendMessage($this->prefix . "Arena found! (woolbattle$level)");
 	    $player2->sendMessage($this->prefix . "Arena found! (woolbattle$level)");
-	    $arena = new Config("/home/maps/woolconfig.yml", Config::YAML);
+	    $arena = new Config("/Home/maps/woolconfig.yml", Config::YAML);
 	    $posx = $arena->get("x1");
 	    $posy = $arena->get("y1");
 	    $posz = $arena->get("z1");
@@ -1287,8 +1287,8 @@ public function onHunger(PlayerExhaustEvent $event) {
 		    $player2->teleport($pos);
 		    $playername = $player->getName();
 		    $playername2 = $player2->getName();
-		    $cplayer = new Config("/home/users/" . $playername . ".yml", Config::YAML);
-		    $cplayer2 = new Config("/home/users/" . $playername2 . ".yml", Config::YAML);
+		    $cplayer = new Config("/Home/users/" . $playername . ".yml", Config::YAML);
+		    $cplayer2 = new Config("/Home/users/" . $playername2 . ".yml", Config::YAML);
 		    $cplayer->set("ingame", true);
 		    $cplayer->set("woolcolor", "red");
 		    $cplayer2->set("ingame", true);
@@ -1309,11 +1309,11 @@ public function onHunger(PlayerExhaustEvent $event) {
 	    elseif($clanwar == true) {
 		    $playername = $player->getName();
 		    $playername2 = $player2->getName();
-		    $c1 = new Config("/home/users/" . $playername . ".yml", Config::YAML);
-		    $c2 = new Config("/home/users/" . $playername2 . ".yml", Config::YAML);
+		    $c1 = new Config("/Home/users/" . $playername . ".yml", Config::YAML);
+		    $c2 = new Config("/Home/users/" . $playername2 . ".yml", Config::YAML);
 		    $squad1 = (array)$c1->get("grouparray");
 		    $squad2 = (array)$c2->get("grouparray");
-		    $arena = new Config("/home/maps/woolconfig.yml", Config::YAML);
+		    $arena = new Config("/Home/maps/woolconfig.yml", Config::YAML);
 		    $arena->set("usew$level", true);
 		    $arena->save();
 		    $posx = $arena->get("x1");
@@ -1324,7 +1324,7 @@ public function onHunger(PlayerExhaustEvent $event) {
 		    	$player = $this->getServer()->getPlayer((string)$member);
 		    	$player->teleport($pos);
 		    	$pn = $player->getName();
-		    	$c = new Config("/home/users/$pn.yml", Config::YAML);
+		    	$c = new Config("/Home/users/$pn.yml", Config::YAML);
 		    	$c->set("lifes", 20);
 		    	$c->set("pos", 1);
 		    	$c->set("ingame", true);
@@ -1343,7 +1343,7 @@ public function onHunger(PlayerExhaustEvent $event) {
 			    $player = $this->getServer()->getPlayer((string)$member);
 			    $player->teleport($pos);
 			    $pn = $player->getName();
-			    $c = new Config("/home/users/$pn.yml", Config::YAML);
+			    $c = new Config("/Home/users/$pn.yml", Config::YAML);
 			    $c->set("lifes", 20);
 			    $c->set("pos", 1);
 			    $c->set("ingame", true);
@@ -1381,7 +1381,7 @@ public function onHunger(PlayerExhaustEvent $event) {
 			    return true;
 		    } else {
 			    $this->getLogger()->info($player->getNameTag());
-			    $c = new Config("/home/users/" . $player->getNameTag() . ".yml", Config::YAML);
+			    $c = new Config("/Home/users/" . $player->getNameTag() . ".yml", Config::YAML);
 			    if ($c->get("cooldown") == true) {
 				    if($this->lang == "deu") {
 					    $player->sendMessage($this->prefix . "5 Sekunden Cooldown!");
@@ -1461,7 +1461,7 @@ class Asker extends Task
 		$player = $this->player;
 		if (!$player->isOnline()) {
 			$playername = $this->plugin->lastquit;
-			$wspwh = new Config("/home/users/$playername.yml", Config::YAML);
+			$wspwh = new Config("/Home/users/$playername.yml", Config::YAML);
 			$otherplayer = $wspwh->get("pw");
 			$ig = $wspwh->get("ingame");
 			if($ig == true) {
@@ -1474,7 +1474,7 @@ class Asker extends Task
 				$this->plugin->clearHotbar($otherplayer);
 				$this->plugin->getWoolLobby($otherplayer);
 				$opname = $otherplayer->getName();
-				$eloset = new Config("/home/users/".$opname.".yml", Config::YAML);
+				$eloset = new Config("/Home/users/".$opname.".yml", Config::YAML);
 				$celo = $eloset->get("elo");
 				$seed = bcmul(microtime(), abs(ip2long($player->getAddress())), 2);
 				mt_srand($seed);
@@ -1485,7 +1485,7 @@ class Asker extends Task
 				$otherplayer->sendMessage(f::GREEN . "+$geelo Elo");
 				$welt = $this->plugin->getServer()->getLevelByName("lobby");
 				$pos = new Position(87 , 65 , -72 , $welt);
-				$wspwh = new Config("/home/users/".$opname.".yml", Config::YAML);
+				$wspwh = new Config("/Home/users/".$opname.".yml", Config::YAML);
 				$wspwh->set("ingame", false);
 				$wspwh->set("woolcolor", false);
 				$wspwh->set("ms", false);
@@ -1495,7 +1495,7 @@ class Asker extends Task
 				$arenaname = $otherplayer->getLevel()->getFolderName();
 				$arenaid = (int) filter_var($arenaname, FILTER_SANITIZE_NUMBER_INT);
 				$this->plugin->getLogger()->info(f::WHITE."$arenaid");
-				$arena = new Config("/home/maps/woolconfig.yml", Config::YAML);
+				$arena = new Config("/Home/maps/woolconfig.yml", Config::YAML);
 				$arena->set("usew$arenaid", false);
 				$arena->save();
 				$this->plugin->getServer()->unloadLevel($this->plugin->getServer()->getLevelByName("$arenaname"));
@@ -1503,7 +1503,7 @@ class Asker extends Task
 				$this->plugin->getServer()->getLevelByName("$arenaname")->setAutoSave(false);
 				$this->plugin->getLogger()->info("Arena: $arenaname Geladen!");
 				$otherplayer->teleport($pos);
-				$wspwh = new Config("/home/users/".$playername.".yml", Config::YAML);
+				$wspwh = new Config("/Home/users/".$playername.".yml", Config::YAML);
 				$wspwh->set("ingame", false);
 				$wspwh->set("woolcolor", false);
 				$wspwh->set("ms", false);
@@ -1515,7 +1515,7 @@ class Asker extends Task
 				$this->plugin->getLogger()->info("$this->player quited the in an running Game!");
 			}
 			$name = $player->getName();
-			$c = new Config("/home/users/$name.yml", Config::YAML);
+			$c = new Config("/Home/users/$name.yml", Config::YAML);
 			$c->set("ingame", false);
 			$c->set("woolcolor", false);
 			$c->set("ms", false);
@@ -1530,7 +1530,7 @@ class Asker extends Task
 			$this->plugin->getLogger()->info("Task for $this->player was Disabled!");
 		} else {
 			$playername = $player->getName();
-			$ig = new Config("/home/users/" . $playername . ".yml", Config::YAML);
+			$ig = new Config("/Home/users/" . $playername . ".yml", Config::YAML);
 			$isIngame = $ig->get("ingame");
 			$clanWar = $ig->get("clanwar");
 			if ($isIngame == true) {
@@ -1540,7 +1540,7 @@ class Asker extends Task
 					$op = $this->plugin->getServer()->getPlayer($op);
 					$lifes = $ig->get("lifes");
 					$opname = $op->getName();
-					$opc = new Config("/home/users/" . $opname . ".yml", Config::YAML);
+					$opc = new Config("/Home/users/" . $opname . ".yml", Config::YAML);
 					$lifes2 = $opc->get("lifes");
 					$player->sendPopup(f::GREEN . "$playername: " . f::WHITE . "$lifes" . f::GOLD . " vs " . f::GREEN . "$opname: " . f::WHITE . "$lifes2");
 					if ($lifes < 0) {
@@ -1554,7 +1554,7 @@ class Asker extends Task
 							$op->sendPopup(f::GREEN . f::BOLD . "You won!");
 						}
 						$opname = $op->getName();
-						$eloset = new Config("/home/elo/" . $opname . ".yml", Config::YAML);
+						$eloset = new Config("/Home/elo/" . $opname . ".yml", Config::YAML);
 						$celo = $eloset->get("elo");
 						$seed = bcmul(microtime(), abs(ip2long($op->getAddress())), 2);
 						mt_srand($seed);
@@ -1565,7 +1565,7 @@ class Asker extends Task
 						$op->sendMessage(f::GREEN . "+ $pelo Elo");
 						$op->sendPopup(f::GREEN . "+ $pelo Elo");
 						$welt = $this->plugin->getServer()->getLevelByName("lobby");
-						$cfg = new Config("/home/maps/woolconfig.yml", Config::YAML);
+						$cfg = new Config("/Home/maps/woolconfig.yml", Config::YAML);
 						$x = $cfg->get("spawnx");
 						$y = $cfg->get("spawny");
 						$z = $cfg->get("spawnz");
@@ -1581,7 +1581,7 @@ class Asker extends Task
 						}
 						$arenaname = $player->getLevel()->getFolderName();
 						$this->plugin->getLogger()->info(f::WHITE . $arenaname);
-						$eloset = new Config("/home/elo/" . $playername . ".yml", Config::YAML);
+						$eloset = new Config("/Home/elo/" . $playername . ".yml", Config::YAML);
 						$celo = $eloset->get("elo");
 						$seed = bcmul(microtime(), abs(ip2long($player->getAddress())), 2);
 						mt_srand($seed);
@@ -1592,21 +1592,21 @@ class Asker extends Task
 						$player->sendMessage(f::RED . "- $pelo Elo");
 						$player->sendPopup(f::RED . "- $pelo Elo");
 						$welt = $this->plugin->getServer()->getLevelByName("lobby");
-						$cfg = new Config("/home/maps/woolconfig.yml", Config::YAML);
+						$cfg = new Config("/Home/maps/woolconfig.yml", Config::YAML);
 						$x = $cfg->get("spawnx");
 						$y = $cfg->get("spawny");
 						$z = $cfg->get("spawnz");
 						$pos = new Position($x, $y, $z, $welt);
 						$player->teleport($pos);
 						$this->plugin->getWoolLobby($player);
-						$wspwh = new Config("/home/users/" . $playername . ".yml", Config::YAML);
+						$wspwh = new Config("/Home/users/" . $playername . ".yml", Config::YAML);
 						$wspwh->set("ingame", false);
 						$wspwh->set("woolcolor", false);
 						$wspwh->set("ms", false);
 						$wspwh->set("lifes", 10);
 						$wspwh->set("wooltode", $wspwh->get("wooltode") + 1);
 						$wspwh->save();
-						$wspwh = new Config("/home/users/" . $opname . ".yml", Config::YAML);
+						$wspwh = new Config("/Home/users/" . $opname . ".yml", Config::YAML);
 						$wspwh->set("ingame", false);
 						$wspwh->set("woolcolor", false);
 						$wspwh->set("ms", false);
@@ -1615,7 +1615,7 @@ class Asker extends Task
 						$wspwh->save();
 						$arenaid = (int)filter_var($arenaname, FILTER_SANITIZE_NUMBER_INT);
 						$this->plugin->getLogger()->info(f::WHITE . "$arenaid");
-						$arena = new Config("/home/maps/woolconfig.yml", Config::YAML);
+						$arena = new Config("/Home/maps/woolconfig.yml", Config::YAML);
 						$arena->set("usew$arenaid", false);
 						$arena->save();
 						$this->plugin->getServer()->unloadLevel($this->plugin->getServer()->getLevelByName("$arenaname"));
@@ -1625,13 +1625,13 @@ class Asker extends Task
 					} else {
 						$hight = $player->getY();
 						if ($hight < 0) {
-							$opc = new Config("/home/users/" . $playername . ".yml", Config::YAML);
+							$opc = new Config("/Home/users/" . $playername . ".yml", Config::YAML);
 							$clives = $opc->get("lifes");
 							$clives = $clives - 1;
 							$opc->set("lifes", $clives);
 							$opc->save();
 							$welt = $player->getLevel();
-							$woolarena = new Config("/home/maps/woolconfig.yml", Config::YAML);
+							$woolarena = new Config("/Home/maps/woolconfig.yml", Config::YAML);
 							$pos = $opc->get("pos");
 							$x = $woolarena->get("x$pos");
 							$y = $woolarena->get("y$pos");
@@ -1652,7 +1652,7 @@ class Asker extends Task
 					$lifes = $ig->get("lifes");
 					$oplayername = $ig->get("pw");
 					$oplayer = $this->plugin->getServer()->getPlayer($oplayername);
-					$ig2 = new Config("/home/users/$oplayername.yml", Config::YAML);
+					$ig2 = new Config("/Home/users/$oplayername.yml", Config::YAML);
 					$olifes = $ig2->get("lifes");
 					$leadername = $ig->get("leader");
 					$oleadername = $ig2->get("leader");
@@ -1665,11 +1665,11 @@ class Asker extends Task
 					}
 					$h = $player->getY();
 					if($h < 0) {
-						$lc = new Config("/home/users/$leadername.yml", Config::YAML);
+						$lc = new Config("/Home/users/$leadername.yml", Config::YAML);
 						$lc->set("lifes", (int)$lc->get("lifes")-1);
 						$lc->save();
 						$welt = $player->getLevel();
-						$woolarena = new Config("/home/maps/woolconfig.yml", Config::YAML);
+						$woolarena = new Config("/Home/maps/woolconfig.yml", Config::YAML);
 						$pos = $ig->get("pos");
 						$x = $woolarena->get("x$pos");
 						$y = $woolarena->get("y$pos");
@@ -1680,12 +1680,12 @@ class Asker extends Task
 						$this->plugin->getEq($player);
 					}
 					if($lifes < 0) {
-						$lc = new Config("/home/users/$leadername.yml", Config::YAML);
+						$lc = new Config("/Home/users/$leadername.yml", Config::YAML);
 						$squad1 = (array)$lc->get("grouparray");
-						$lc2 = new Config("/home/users/$oleadername.yml", Config::YAML);
+						$lc2 = new Config("/Home/users/$oleadername.yml", Config::YAML);
 						$squad2 = (array)$lc2->get("grouparray");
 						$allplayers = array_merge($squad1, $squad2);
-						$cfg = new Config("/home/maps/woolconfig.yml", Config::YAML);
+						$cfg = new Config("/Home/maps/woolconfig.yml", Config::YAML);
 						$x = $cfg->get("spawnx");
 						$y = $cfg->get("spawny");
 						$z = $cfg->get("spawnz");
@@ -1693,7 +1693,7 @@ class Asker extends Task
 						foreach($allplayers as $playername) {
 							$player = $this->plugin->getServer()->getPlayer($playername);
 							$player->teleport($pos);
-							$ig = new Config("/home/users/$playername.yml", Config::YAML);
+							$ig = new Config("/Home/users/$playername.yml", Config::YAML);
 							$ig->set("ingame", false);
 							$ig->set("woolcolor", false);
 							$ig->set("ms", false);
@@ -1707,7 +1707,7 @@ class Asker extends Task
 						$arenaname = $player->getLevel()->getFolderName();
 						$arenaid = (int)filter_var($arenaname, FILTER_SANITIZE_NUMBER_INT);
 						$this->plugin->getLogger()->info(f::WHITE . "$arenaid");
-						$arena = new Config("/home/maps/woolconfig.yml", Config::YAML);
+						$arena = new Config("/Home/maps/woolconfig.yml", Config::YAML);
 						$arena->set("usew$arenaid", false);
 						$arena->save();
 						$this->plugin->getServer()->unloadLevel($this->plugin->getServer()->getLevelByName("$arenaname"));
@@ -1739,7 +1739,7 @@ class Cooldown extends Task
 	{
 		$player = $this->player;
 		$name = $player->getName();
-		$c = new Config("/home/users/$name.yml", Config::YAML);
+		$c = new Config("/Home/users/$name.yml", Config::YAML);
 		$c->set("cooldown", false);
 		$c->save();
 		$this->plugin->getScheduler()->cancelTask($this->getTaskId());
@@ -1760,7 +1760,7 @@ class Spawnprotection extends Task
 	{
 		$player = $this->player;
 		$name = $player->getName();
-		$c = new Config("/home/users/$name.yml", Config::YAML);
+		$c = new Config("/Home/users/$name.yml", Config::YAML);
 		$c->set("spawnprotect", false);
 		$c->save();
 		if($this->plugin->lang == "deu") {
